@@ -122,7 +122,7 @@ if __name__ == '__main__':
                         help='PSS source file from which the audio will be taken')
 
     parser.add_argument('--target', type=str, required=True,
-                        help='PSS source file from which the audio will be taken')
+                        help='PSS target file to which the audio will be injected')
 
     args = parser.parse_args()
 
