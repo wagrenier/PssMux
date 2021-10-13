@@ -126,7 +126,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    new_target_filename = args.source[:args.source.rfind('.')] + '_mux' + args.source[args.source.rfind('.'):]
+    target_extension_index = args.target.rfind('.')
 
-    copyfile(args['source'], new_target_filename)
-    pss_mux(args['source'], new_target_filename)
+    new_target_filename = args.target[:target_extension_index] + '_mux' + args.target[target_extension_index:]
+
+    copyfile(args.source, new_target_filename)
+    pss_mux(args.source, new_target_filename)

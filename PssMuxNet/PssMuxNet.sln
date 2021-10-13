@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PssMux", "PssMux\PssMux.csproj", "{8687AB22-A311-4666-8638-3989B7E1D753}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PssMuxCmd", "PssMuxCmd\PssMuxCmd.csproj", "{908ACAA9-E28A-4A54-A0C2-AFC314AE4C85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8687AB22-A311-4666-8638-3989B7E1D753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8687AB22-A311-4666-8638-3989B7E1D753}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8687AB22-A311-4666-8638-3989B7E1D753}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8687AB22-A311-4666-8638-3989B7E1D753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{908ACAA9-E28A-4A54-A0C2-AFC314AE4C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{908ACAA9-E28A-4A54-A0C2-AFC314AE4C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{908ACAA9-E28A-4A54-A0C2-AFC314AE4C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{908ACAA9-E28A-4A54-A0C2-AFC314AE4C85}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
