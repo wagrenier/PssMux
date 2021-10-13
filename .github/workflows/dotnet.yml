@@ -24,7 +24,7 @@ jobs:
         dotnet-version: 5.0.x
 
     - name: Restore dependencies
-      run: dotnet restore PssMux/PssMuxNet.sln
+      run: dotnet restore PssMuxNet/PssMuxNet.sln
       
     # Setups the env vars for gitversion
     - uses: gittools/actions/gitversion/setup@v0.9.7
@@ -44,10 +44,10 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true' 
    
     - name: Build
-      run: dotnet build --no-restore -c Release PssMux/PssMuxNet.sln
+      run: dotnet build --no-restore -c Release PssMuxNet/PssMuxNet.sln
     
     - name: Publish
-      run: dotnet publish -c Release /p:DebugType=None -o ./release PssMux/PssMuxNet.sln
+      run: dotnet publish -c Release /p:DebugType=None -o ./release PssMuxNet/PssMuxNet.sln
     
     # Zips the binaries and required files
     - name: Zip App
