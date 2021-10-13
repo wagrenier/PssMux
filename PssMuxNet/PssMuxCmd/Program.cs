@@ -36,6 +36,7 @@ namespace PssMuxCmd
                 return -1;
             }
             
+            Console.WriteLine("All Done!");
             return 0;
         }
     }
