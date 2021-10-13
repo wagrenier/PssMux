@@ -15,8 +15,8 @@ namespace PssMuxCmd
                     MuxFiles,
                     errs => 1);
         }
-        
-        public static int MuxFiles(MuxOptions muxOptions)
+
+        private static int MuxFiles(MuxOptions muxOptions)
         {
             try
             {
