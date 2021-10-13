@@ -24,14 +24,14 @@ namespace PssMuxCmd
                 var targetFileContent = File.ReadAllBytes(muxOptions.Target);
 
                 var muxFileContent = PssHandler.SwitchPssAudio(sourceFileContent, targetFileContent);
-
-                var directoryName = new FileInfo(muxOptions.Target).Directory;
-                File.WriteAllBytes($"{directoryName.Name}/a.pss", muxFileContent);
+                var targetFileInfo = new FileInfo(muxOptions.Target);
+                File.WriteAllBytes($"{targetFileInfo.DirectoryName}/{targetFileInfo.Name}_mux.pss", muxFileContent);
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(ex.Message);
+                Console.ForegroundColor = ConsoleColor.White;
 
                 return -1;
             }
