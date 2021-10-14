@@ -1,3 +1,4 @@
+import io
 from shutil import copyfile
 import argparse
 
@@ -76,34 +77,38 @@ def pss_mux(source: str, target: str):
     target_file = open(target, 'rb+')
     source_file = open(source, 'rb')
 
+    pss_mux_from_bytes_io(target_file, source_file)
+
+
+def pss_mux_from_bytes_io(source_io: io.BytesIO, target_io: io.BytesIO):
     total_buffer_written = 0x0
-    source_full_buff = build_full_audio_buffer(source_file)
+    source_full_buff = build_full_audio_buffer(source_io)
 
-    seek_next_audio(target_file)
-    seek_next_audio(source_file)
+    seek_next_audio(target_io)
+    seek_next_audio(source_io)
 
-    target_total_size, target_curr_block_size = initial_audio_block(target_file)
-    source_total_size, source_curr_block_size = initial_audio_block(source_file)
+    target_total_size, target_curr_block_size = initial_audio_block(target_io)
+    source_total_size, source_curr_block_size = initial_audio_block(source_io)
 
-    source_file.seek(source_curr_block_size, 1)
-    target_file.write(bytearray(source_full_buff[0:target_curr_block_size]))
+    source_io.seek(source_curr_block_size, 1)
+    target_io.write(bytearray(source_full_buff[0:target_curr_block_size]))
 
     total_buffer_written += target_curr_block_size
 
     while True:
-        target_done = seek_next_audio(target_file)
-        source_done = seek_next_audio(source_file)
+        target_done = seek_next_audio(target_io)
+        source_done = seek_next_audio(source_io)
 
         if target_done or source_done:
             break
 
-        target_curr_block_size = audio_block(target_file)
-        source_curr_block_size = audio_block(source_file)
+        target_curr_block_size = audio_block(target_io)
+        source_curr_block_size = audio_block(source_io)
 
-        source_file.seek(source_curr_block_size, 1)
+        source_io.seek(source_curr_block_size, 1)
 
         end_offset = total_buffer_written + target_curr_block_size
-        target_file.write(bytearray(source_full_buff[total_buffer_written:end_offset]))
+        target_io.write(bytearray(source_full_buff[total_buffer_written:end_offset]))
 
         total_buffer_written += target_curr_block_size
 
@@ -112,8 +117,9 @@ def pss_mux(source: str, target: str):
         elif target_curr_block_size > source_curr_block_size:
             print('Bigger block size')
 
-    target_file.close()
-    source_file.close()
+    source_io.close()
+
+    return target_io
 
 
 if __name__ == '__main__':
