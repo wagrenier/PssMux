@@ -41,7 +41,16 @@ namespace PssMux.Operations
                 targetCurrentBlockSize = _target.AudioBlock();
                 
                 _source.SeekRelative(sourceCurrentBlockSize);
-                
+
+                if (sourceAudioBuffer.GetSize() < sourceAudioBuffer.GetPosition() + targetCurrentBlockSize)
+                {
+                    var numRemainingBytes = sourceAudioBuffer.GetSize() - sourceAudioBuffer.GetPosition() - 1;
+                        
+                    _target.Write(sourceAudioBuffer.Read(numRemainingBytes));
+
+                    break;
+                }
+
                 _target.Write(sourceAudioBuffer.Read(targetCurrentBlockSize));
             }
 

@@ -43,5 +43,15 @@ namespace PssMux
         {
             return _stream;
         }
+
+        public int GetSize()
+        {
+            return _stream.Length;
+        }
+
+        public int GetPosition()
+        {
+            return _position;
+        }
     }
 }

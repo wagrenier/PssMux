@@ -2,6 +2,7 @@
 using System.IO;
 using CommandLine;
 using PssMux.Handler;
+using PssMux.Utils;
 using PssMuxCmd.Options;
 
 namespace PssMuxCmd
@@ -10,10 +11,11 @@ namespace PssMuxCmd
     {
         public static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<MuxOptions, FindOptions>(args)
+            Parser.Default.ParseArguments<MuxOptions, FindOptions, FindAndMuxOptions>(args)
                 .MapResult(
                     (MuxOptions opts) => MuxFiles(opts),
                     (FindOptions opts) => FindPss(opts),
+                    (FindAndMuxOptions opts) => FindAndMux(opts),
                     errs => 1);
         }
 
@@ -30,12 +32,12 @@ namespace PssMuxCmd
             }
             catch (Exception ex)
             {
-                DisplayErrorMessage(ex.Message);
+                ConsoleUtils.DisplayErrorMessage(ex.Message);
 
                 return -1;
             }
             
-            DisplaySuccessMessage("All Done!");
+            ConsoleUtils.DisplaySuccessMessage("All Done!");
             return 0;
         }
 
@@ -47,28 +49,32 @@ namespace PssMuxCmd
             }
             catch (Exception ex)
             {
-                DisplayErrorMessage(ex.Message);
+                ConsoleUtils.DisplayErrorMessage(ex.Message);
 
                 return -1;
             }
 
-            DisplaySuccessMessage("All Done!");
+            ConsoleUtils.DisplaySuccessMessage("All Done!");
             
             return 0;
         }
 
-        private static void DisplaySuccessMessage(string message)
+        private static int FindAndMux(FindAndMuxOptions options)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
-        }
+            try
+            {
+                PssHandler.FindAndMux(options.Source, options.Target);
+            }
+            catch (Exception ex)
+            {
+                ConsoleUtils.DisplayErrorMessage(ex.Message);
 
-        private static void DisplayErrorMessage(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.White;
+                return -1;
+            }
+
+            ConsoleUtils.DisplaySuccessMessage("All Done!");
+            
+            return 0;
         }
     }
 }

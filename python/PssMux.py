@@ -118,8 +118,10 @@ def pss_mux_from_bytes_io(source_io: io.BytesIO, target_io: io.BytesIO):
             print('Bigger block size')
 
     source_io.close()
+    return_value = target_io.read()
+    target_io.close()
 
-    return target_io
+    return return_value
 
 
 if __name__ == '__main__':
@@ -136,5 +138,5 @@ if __name__ == '__main__':
 
     new_target_filename = args.target[:target_extension_index] + '_mux' + args.target[target_extension_index:]
 
-    copyfile(args.source, new_target_filename)
+    copyfile(args.target, new_target_filename)
     pss_mux(args.source, new_target_filename)

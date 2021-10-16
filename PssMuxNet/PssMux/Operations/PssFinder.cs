@@ -9,7 +9,7 @@ namespace PssMux.Operations
     {
         private const int ReadSize = 0x10;
 
-        public static IEnumerable<PssInfo> FindPss(string sourceFileName)
+        public static IList<PssInfo> FindPss(string sourceFileName)
         {
             var binaryReader = new BinaryReader(File.OpenRead(sourceFileName));
             var pssFound = new List<PssInfo>();

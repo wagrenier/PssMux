@@ -3,7 +3,7 @@ using CommandLine;
 namespace PssMuxCmd.Options
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    [Verb("find")]
+    [Verb("find", HelpText = "Find PSS files contained within any file. Useful for finding PSS files within an ISO.")]
     public sealed class FindOptions
     {
         [Option('f', "file", Required = true, HelpText = "File in which you wish to find PSS files.")]

@@ -1,11 +1,56 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using PssMux.Operations;
+using PssMux.Utils;
 
 namespace PssMux.Handler
 {
     public static class PssHandler
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceFileName"></param>
+        /// <param name="targetFileName"></param>
+        public static void FindAndMux(string sourceFileName, string targetFileName)
+        {
+            ConsoleUtils.DisplayWarningMessage("Your source ISO will now be scanned, this may take a while...");
+            var sourcePssFiles = FindPss(sourceFileName, false);
+            
+            ConsoleUtils.DisplayWarningMessage("Your target ISO will now be scanned, this may take a while...");
+            var targetPssFiles = FindPss(targetFileName, false);
+
+            ConsoleUtils.DisplayWarningMessage("Your target ISO will now be copied, this may take a while...");
+            var targetMuxFile = FileUtils.FileNameAppend(targetFileName, "mux");
+            
+            File.Copy(targetFileName, targetMuxFile);
+            
+            using var sourceBinaryReader = new BinaryReader(File.OpenRead(sourceFileName));
+            using var targetBinaryReader = new BinaryReader(File.OpenRead(targetFileName));
+            using var targetBinaryWriter = new BinaryWriter(File.OpenWrite(targetMuxFile));
+
+            for (var i = 0; i < sourcePssFiles.Count && i < targetPssFiles.Count; i++)
+            {
+                try
+                {
+                    var sourcePssContent = ExtractPssFileToByteArray(sourcePssFiles[i], sourceBinaryReader);
+                    var targetPssContent = ExtractPssFileToByteArray(targetPssFiles[i], targetBinaryReader);
+
+                    var muxPss = SwitchPssAudio(sourcePssContent, targetPssContent);
+
+                    targetBinaryWriter.WriteContentAtAddress(targetPssFiles[i].Start, muxPss);
+                }
+                catch (Exception ex)
+                {
+                    ConsoleUtils.DisplayErrorMessage($"Unable to undub PSS file {i}. Reason given: {ex.Message}");
+                }
+            }
+        }
+        
         /// <summary>
         /// Switches the target's audio to the source's audio.
         /// </summary>
@@ -24,7 +69,7 @@ namespace PssMux.Handler
         /// <param name="fileName">Name of the file to scan.</param>
         /// <param name="extractFiles">Will extract the PSS files from the scanned file. Will be saved in the same directory.</param>
         /// <returns>Returns a list of PSS files found within the scanned file.</returns>
-        public static IEnumerable<PssInfo> FindPss(string fileName, bool extractFiles)
+        public static IList<PssInfo> FindPss(string fileName, bool extractFiles)
         {
             var pssFiles = PssFinder.FindPss(fileName);
 
