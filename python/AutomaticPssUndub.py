@@ -30,9 +30,9 @@ def undub(source_filename: str, target_filename: str):
 
     i = 0
     for source_video_info in source_video_files:
-        source_video_file_content = extract_file_content(source_video_info)
-        target_video_file_content = extract_file_content(target_video_files[i])
-        undubbed_pss = pss_mux_from_bytes_io(io.BytesIO(source_video_file_content), io.BytesIO(target_video_file_content))
+        source_video_file_content = io.BytesIO(extract_file_content(source_video_info))
+        target_video_file_content = io.BytesIO(extract_file_content(target_video_files[i]))
+        undubbed_pss = pss_mux_from_bytes_io(source_video_file_content, target_video_file_content)
         write_file_content_at_address(target_video_files[i]['start'], undubbed_pss, target_filename)
         i += 1
 

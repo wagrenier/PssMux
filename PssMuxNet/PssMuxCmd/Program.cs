@@ -10,9 +10,10 @@ namespace PssMuxCmd
     {
         public static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<MuxOptions>(args)
+            Parser.Default.ParseArguments<MuxOptions, FindOptions>(args)
                 .MapResult(
-                    MuxFiles,
+                    (MuxOptions opts) => MuxFiles(opts),
+                    (FindOptions opts) => FindPss(opts),
                     errs => 1);
         }
 
@@ -29,15 +30,45 @@ namespace PssMuxCmd
             }
             catch (Exception ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(ex.Message);
-                Console.ForegroundColor = ConsoleColor.White;
+                DisplayErrorMessage(ex.Message);
 
                 return -1;
             }
             
-            Console.WriteLine("All Done!");
+            DisplaySuccessMessage("All Done!");
             return 0;
+        }
+
+        private static int FindPss(FindOptions options)
+        {
+            try
+            {
+                PssHandler.FindPss(options.File, options.Extract);
+            }
+            catch (Exception ex)
+            {
+                DisplayErrorMessage(ex.Message);
+
+                return -1;
+            }
+
+            DisplaySuccessMessage("All Done!");
+            
+            return 0;
+        }
+
+        private static void DisplaySuccessMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        private static void DisplayErrorMessage(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
