@@ -27,21 +27,14 @@ jobs:
       run: dotnet restore PssMuxNet/PssMuxNet.sln
       
     # Setups the env vars for gitversion
-    - uses: gittools/actions/gitversion/setup@v0.9.7
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    - uses: gittools/actions/gitversion/setup@v0.9.11
       with:
           versionSpec: '5.x.x'
           includePrerelease: true
           
     - name: Use GitVersion
       id: gitversion # step id used as reference for output values
-      uses: gittools/actions/gitversion/execute@v0.9.7
-      #with:
-      #  useConfigFile: true
-      #  configFilePath: ./.github/GitVersion.yml
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true' 
+      uses: gittools/actions/gitversion/execute@v0.9.11
    
     - name: Build
       run: dotnet build --no-restore -c Release PssMuxNet/PssMuxNet.sln
@@ -66,6 +59,13 @@ jobs:
         release_name: PssMux Release ${{ steps.gitversion.outputs.majorMinorPatch }}
         draft: false
         prerelease: ${{ github.event.inputs.pre-release }}
+        
+    - name: Deploy NuGet
+      run: |
+          dotnet restore "PssMuxNet/PssMuxNet.sln"
+          dotnet build --configuration Release "PssMuxNet/PssMux/PssMux.csproj"
+          dotnet pack --configuration Release "PssMuxNet/PssMux/PssMux.csproj"
+          dotnet nuget push "PssMuxNet/PssMux/bin/Release/PssMux.**.**.**.nupkg"
 
     # Releases the zipped assets
     - name: Update release asset
