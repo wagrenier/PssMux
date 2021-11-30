@@ -12,7 +12,7 @@ namespace PssMux.Handler
     public static class PssHandler
     {
         /// <summary>
-        /// 
+        /// Finds and Mux the audio of all PSS files in the binary file
         /// </summary>
         /// <param name="sourceFileName"></param>
         /// <param name="targetFileName"></param>
