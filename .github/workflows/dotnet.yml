@@ -70,6 +70,7 @@ jobs:
           dotnet build --configuration Release "PssMuxNet/PssMux/PssMux.csproj"
           dotnet pack --configuration Release "PssMuxNet/PssMux/PssMux.csproj"
           dotnet nuget push "PssMuxNet/PssMux/bin/Release/PssMux.**.**.**.nupkg" -k ${{ secrets.GITHUB_TOKEN }} -s "https://nuget.pkg.github.com/wagrenier/index.json"
+          dotnet nuget push "PssMuxNet/PssMux/bin/Release/PssMux.**.**.**.nupkg" -k ${{ secrets.NuGet_API_KEY }} -s "https://nuget.pkg.github.com/cheesyburrito/index.json"
 
     # Releases the zipped assets
     - name: Update release asset
