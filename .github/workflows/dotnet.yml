@@ -69,7 +69,7 @@ jobs:
           dotnet restore "PssMuxNet/PssMuxNet.sln"
           dotnet build --configuration Release "PssMuxNet/PssMux/PssMux.csproj"
           dotnet pack --configuration Release "PssMuxNet/PssMux/PssMux.csproj"
-          dotnet nuget push "PssMuxNet/PssMux/bin/Release/PssMux.**.**.**.nupkg"
+          dotnet nuget push "PssMuxNet/PssMux/bin/Release/PssMux.**.**.**.nupkg" -k $NUGET_AUTH_TOKEN
 
     # Releases the zipped assets
     - name: Update release asset
