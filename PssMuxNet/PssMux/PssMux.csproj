@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Company>wagrenier</Company>
+        <RepositoryUrl>https://github.com/wagrenier/PssMux</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
